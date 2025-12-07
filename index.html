@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutri Guide | AI Nutrition & Fitness Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Video Background -->
+    <div class="video-background">
+        <video autoplay muted loop playsinline>
+            <source src="https://res.cloudinary.com/dacsempuu/video/upload/v1765140829/Your_Name_4K_Live_wallpaper_2160p60_ualpvl.webm" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Nutri Guide" class="logo-img">
+                <span class="logo-text">Nutri Guide</span>
+            </a>
+            <div class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link active"><i class="fas fa-home"></i> Home</a>
+                <a href="#dashboard" class="nav-link"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="#nutrition" class="nav-link"><i class="fas fa-utensils"></i> Nutrition</a>
+                <a href="#fitness" class="nav-link"><i class="fas fa-dumbbell"></i> Fitness</a>
+                <a href="#planning" class="nav-link"><i class="fas fa-calendar-alt"></i> Planning</a>
+                <a href="#social" class="nav-link"><i class="fas fa-users"></i> Social</a>
+                <div class="user-menu" id="userMenu">
+                    <button class="btn btn-primary" id="loginBtn">Login</button>
+                </div>
+            </div>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section id="home" class="section hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Your Personal AI Nutrition & Fitness Assistant</h1>
+                    <p class="hero-subtitle">Track meals, plan workouts, monitor progress, and connect with a health-focused community.</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary btn-lg" id="getStartedBtn">Get Started Free</button>
+                        <button class="btn btn-outline btn-lg" id="learnMoreBtn">Learn More</button>
+                    </div>
+                    <div class="hero-features">
+                        <div class="feature-card">
+                            <i class="fas fa-camera"></i>
+                            <h3>AI Food Scan</h3>
+                            <p>Scan any food with AI analysis</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-chart-pie"></i>
+                            <h3>Smart Tracking</h3>
+                            <p>Real-time nutrition tracking</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-dumbbell"></i>
+                            <h3>Workout Plans</h3>
+                            <p>Personalized fitness routines</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-users"></i>
+                            <h3>Community</h3>
+                            <p>Connect & motivate together</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section dashboard-section">
+            <div class="container">
+                <h2 class="section-title">Your Health Dashboard</h2>
+                <p class="section-subtitle">Track your progress in real-time</p>
+                
+                <div class="dashboard-grid" id="dashboardContent">
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading dashboard...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nutrition Section -->
+        <section id="nutrition" class="section nutrition-section">
+            <div class="container">
+                <h2 class="section-title">Nutrition Tracking</h2>
+                <p class="section-subtitle">Log meals, scan food, and monitor nutrition</p>
+                
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="food-scan">Food Scan</button>
+                    <button class="tab-btn" data-tab="meal-log">Log Meal</button>
+                    <button class="tab-btn" data-tab="nutrition-db">Food Database</button>
+                </div>
+                
+                <div class="tab-content active" id="food-scan">
+                    <div class="scan-container">
+                        <div class="scan-area" id="scanArea">
+                            <i class="fas fa-camera"></i>
+                            <p>Click to upload food image</p>
+                            <input type="file" id="foodImageInput" accept="image/*" style="display: none;">
+                        </div>
+                        <button class="btn btn-primary" id="scanBtn" disabled>Scan Food</button>
+                        <div class="scan-results" id="scanResults"></div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="meal-log">
+                    <form id="mealForm" class="meal-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="mealName">Meal Name</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-utensils"></i>
+                                    <input type="text" id="mealName" placeholder="Enter meal name" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="mealType">Meal Type</label>
+                                <select id="mealType" required>
+                                    <option value="">Select meal type</option>
+                                    <option value="breakfast">Breakfast</option>
+                                    <option value="lunch">Lunch</option>
+                                    <option value="dinner">Dinner</option>
+                                    <option value="snack">Snack</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="calories">Calories</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-fire"></i>
+                                    <input type="number" id="calories" placeholder="Enter calories" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="protein">Protein (g)</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-drumstick-bite"></i>
+                                    <input type="number" id="protein" placeholder="Enter protein" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="carbs">Carbs (g)</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-bread-slice"></i>
+                                    <input type="number" id="carbs" placeholder="Enter carbs" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="fat">Fat (g)</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-oil-can"></i>
+                                    <input type="number" id="fat" placeholder="Enter fat" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Log Meal</button>
+                    </form>
+                    <div class="recent-meals" id="recentMeals"></div>
+                </div>
+                
+                <div class="tab-content" id="nutrition-db">
+                    <div class="search-bar">
+                        <div class="input-with-icon" style="flex: 1;">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="foodSearch" placeholder="Search for food...">
+                        </div>
+                        <button class="btn btn-primary" id="searchFoodBtn">Search</button>
+                    </div>
+                    <div class="food-database" id="foodDatabase"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fitness Section -->
+        <section id="fitness" class="section fitness-section">
+            <div class="container">
+                <h2 class="section-title">Fitness Tracking</h2>
+                <p class="section-subtitle">Log workouts and track your fitness journey</p>
+                
+                <div class="fitness-grid">
+                    <div class="workout-log">
+                        <h3>Log Workout</h3>
+                        <form id="workoutForm">
+                            <div class="form-group">
+                                <label for="workoutName">Workout Name</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-dumbbell"></i>
+                                    <input type="text" id="workoutName" placeholder="Enter workout name" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="workoutType">Type</label>
+                                <select id="workoutType" required>
+                                    <option value="">Select workout type</option>
+                                    <option value="cardio">Cardio</option>
+                                    <option value="strength">Strength</option>
+                                    <option value="flexibility">Flexibility</option>
+                                    <option value="hiit">HIIT</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="duration">Duration (minutes)</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-clock"></i>
+                                    <input type="number" id="duration" placeholder="Enter duration" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="caloriesBurned">Calories Burned</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-fire"></i>
+                                    <input type="number" id="caloriesBurned" placeholder="Enter calories burned" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Log Workout</button>
+                        </form>
+                    </div>
+                    <div class="workout-history">
+                        <h3>Recent Workouts</h3>
+                        <div id="workoutHistory"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Planning Section -->
+        <section id="planning" class="section planning-section">
+            <div class="container">
+                <h2 class="section-title">Meal Planning</h2>
+                <p class="section-subtitle">Generate weekly meal plans and grocery lists</p>
+                
+                <div class="planning-actions">
+                    <div class="planning-card" id="generateMealPlanCard">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>Generate Weekly Plan</h3>
+                        <p>Create a personalized meal plan based on your goals</p>
+                        <button class="btn btn-primary" id="generateMealPlanBtn">Generate Now</button>
+                    </div>
+                    <div class="planning-card" id="viewGroceryCard">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Grocery List</h3>
+                        <p>View and manage your shopping list</p>
+                        <button class="btn btn-outline" id="viewGroceryBtn">View List</button>
+                    </div>
+                </div>
+                
+                <div class="meal-plan-calendar" id="mealPlanCalendar"></div>
+                
+                <div class="grocery-list-section" id="groceryListSection">
+                    <div class="grocery-header">
+                        <h3><i class="fas fa-shopping-cart"></i> Grocery List</h3>
+                        <div class="grocery-stats">
+                            <span><i class="fas fa-check-circle"></i> <span id="purchasedCount">0</span> purchased</span>
+                            <span><i class="fas fa-clock"></i> <span id="pendingCount">0</span> pending</span>
+                        </div>
+                    </div>
+                    
+                    <div class="grocery-categories" id="groceryList">
+                        <div class="no-data-message">
+                            <i class="fas fa-shopping-cart"></i>
+                            <h4>Your grocery list is empty</h4>
+                            <p>Generate a meal plan to automatically create a grocery list, or add items manually.</p>
+                            <button class="btn btn-primary" id="addFirstItemBtn">
+                                <i class="fas fa-plus"></i> Add First Item
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="grocery-footer">
+                        <div class="grocery-total">
+                            Total Items: <strong id="totalItems">0</strong>
+                        </div>
+                        <div class="grocery-export">
+                            <button class="btn btn-sm btn-outline" id="printGroceryBtn">
+                                <i class="fas fa-print"></i> Print
+                            </button>
+                            <button class="btn btn-sm btn-primary" id="shareGroceryBtn">
+                                <i class="fas fa-share"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Section -->
+        <section id="social" class="section social-section">
+            <div class="container">
+                <h2 class="section-title">Health Community</h2>
+                <p class="section-subtitle">Connect, share, and motivate each other</p>
+                
+                <div class="social-tabs">
+                    <button class="tab-btn active" data-tab="social-feed">
+                        <i class="fas fa-newspaper"></i> <span>Feed</span>
+                    </button>
+                    <button class="tab-btn" data-tab="social-friends">
+                        <i class="fas fa-users"></i> <span>Friends</span>
+                    </button>
+                    <button class="tab-btn" data-tab="social-search">
+                        <i class="fas fa-search"></i> <span>Find Friends</span>
+                    </button>
+                </div>
+                
+                <div class="tab-content active" id="social-feed">
+                    <div class="post-form">
+                        <textarea id="postContent" placeholder="Share your health journey..."></textarea>
+                        <button class="btn btn-primary" id="postBtn">Post</button>
+                    </div>
+                    <div class="feed" id="socialFeed"></div>
+                </div>
+                
+                <div class="tab-content" id="social-friends">
+                    <div class="friends-section">
+                        <div class="friends-header">
+                            <h3><i class="fas fa-users"></i> Your Friends</h3>
+                            <span class="friends-count" id="friendsCount">0 friends</span>
+                        </div>
+                        
+                        <div class="friends-list" id="friendsList"></div>
+                        
+                        <div class="no-friends-message" id="noFriendsMessage">
+                            <i class="fas fa-user-friends"></i>
+                            <h4>No friends yet</h4>
+                            <p>Start by searching for users to connect with and build your health community!</p>
+                            <button class="btn btn-primary" onclick="switchTab('social-search')">
+                                <i class="fas fa-search"></i> Find Friends
+                            </button>
+                        </div>
+                        
+                        <div class="suggested-friends">
+                            <h4><i class="fas fa-user-plus"></i> Suggested Friends</h4>
+                            <div class="suggested-users-grid" id="suggestedFriends"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="social-search">
+                    <div class="find-friends-section">
+                        <div class="search-bar">
+                            <div class="input-with-icon" style="flex: 1;">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="friendSearch" placeholder="Search for users...">
+                            </div>
+                            <button class="btn btn-primary" id="searchUserBtn">Search</button>
+                        </div>
+                        <div class="search-results-container" id="searchResults"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Auth Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Welcome to Nutri Guide</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Login</button>
+                    <button class="auth-tab" data-tab="register">Register</button>
+                </div>
+                
+                <form id="loginForm" class="auth-form active">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+                
+                <form id="registerForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="registerUsername">Username</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="registerUsername" placeholder="Choose a username" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="registerEmail" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="registerPassword" placeholder="Create a password" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
